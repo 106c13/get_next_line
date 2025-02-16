@@ -21,9 +21,9 @@
 char	*get_next_line(int fd);
 
 // get_next_line_utils.c
-char	*read_buffer(char *buffer, char *str, ssize_t *total, ssize_t i);
-ssize_t	end_of_line(char *buffer, size_t bytes_read);
-void	str_cp(char *src, char *dest);
-void	str_join(char *str1, char *str2);
+int 	get_line(char **str, char *buffer, ssize_t *buffer_offset);
+int		ft_strnjoin(char *str1, char *str2);
+char	*new_str(char *str, ssize_t bytes_read);
+char	*ft_calloc(ssize_t size);
 char	*exit_gnl(char *str);
 #endif
