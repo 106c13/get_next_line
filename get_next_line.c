@@ -1,71 +1,50 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/16 13:46:37 by haaghaja          #+#    #+#             */
+/*   Updated: 2025/02/16 16:24:22 by haaghaja         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "get_next_line.h"
 #include <stdio.h>
 
-
-// Joins str2 to str1 without \0
-void	str_join(char *str1, char *str2)
-{
-	while (*str1)
-		str1++;
-	while (*str2 && *str2 != '\n')
-	{
-		*str1 = *str2;
-		str1++;
-		str2++;
-	}
-	if (*str2 == '\n')
-	{
-		*str1 = *str2;
-		*str1++;
-	}
-	*str1 = '\0';
-}
-
-// Copies string without \0
-void	str_ncp(char *src, char *dest)
-{
-	while (*src)
-	{
-		*dest = *src;
-		src++;
-		dest++;
-	}
-}
-
 char	*get_next_line(int fd)
 {
-	char	*str;
-	char	*temp;
-	char	buffer[BUFFER_SIZE];
-	size_t bytes_read;
-	size_t total;
-	int i;
+	char			*str;
+	static char		buffer[BUFFER_SIZE];
+	static ssize_t	bytes_read;
+	static ssize_t	bytes_offset;
+	static ssize_t	total;
 
+
+	
+
+
+
+
+	bytes_offset = read_buffer(buffer, NULL, 0, bytes_read);
+	//str = malloc(1);
+	//*str = '\0';
 	total = 0;
-	str = malloc(1);
-	str[0] = '\0';
 	bytes_read = 1;
+	printf("R: %s\n", str);
 	while (bytes_read > 0)
 	{
-		bytes_read = read(fd, buffer, BUFFER_SIZE - 1);
-		i = 0;
-		while (i < bytes_read && buffer[i] != '\n')
-			i++;
-		buffer[i + 1] = '\0';
-		temp = str;
-		if (buffer[i] == '\n')
-			str = malloc((total + i + 2) * sizeof(char));
-		else
-			str = malloc((total + i + 1) * sizeof(char));
+		bytes_read = read(fd, buffer, BUFFER_SIZE);
+		if (bytes_read == -1)
+			return (exit_gnl(str));
+		str = read_buffer(buffer, str, &total, bytes_read);
 		if (!str)
-			return (NULL);
-		str_ncp(temp, str);
-		free(temp);
-		str_join(str, buffer);
-		total += i;
-		printf("%d\n", total);
+			return (exit_gnl(str));
 		if (str[total] == '\n')
-			break;
+			break ;
+		if (!*str)
+			return (exit_gnl(str));
 	}
 	return (str);
 }
