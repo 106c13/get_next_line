@@ -16,35 +16,27 @@
 char	*get_next_line(int fd)
 {
 	char			*str;
-	static char		buffer[BUFFER_SIZE];
 	static ssize_t	bytes_read;
-	static ssize_t	bytes_offset;
-	static ssize_t	total;
+	static ssize_t	buffer_offset;
+	static char		buffer[BUFFER_SIZE + 1];
 
-
-	
-
-
-
-
-	bytes_offset = read_buffer(buffer, NULL, 0, bytes_read);
-	//str = malloc(1);
-	//*str = '\0';
-	total = 0;
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
+	str = ft_calloc(1);
 	bytes_read = 1;
-	printf("R: %s\n", str);
 	while (bytes_read > 0)
 	{
+		if (get_line(&str, buffer, &buffer_offset))
+			break ;
+		if (!str)
+			return (NULL);
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
 		if (bytes_read == -1)
 			return (exit_gnl(str));
-		str = read_buffer(buffer, str, &total, bytes_read);
-		if (!str)
-			return (exit_gnl(str));
-		if (str[total] == '\n')
+		buffer_offset = 0;
+		buffer[bytes_read] = '\0';
+		if (bytes_read == 0)
 			break ;
-		if (!*str)
-			return (exit_gnl(str));
 	}
 	return (str);
 }
