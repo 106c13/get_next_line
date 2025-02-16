@@ -13,8 +13,33 @@
 #include "get_next_line.h"
 #include <stdio.h>
 
-void	str_join(char *str1, char *str2)
+int get_line(char **str, char *buffer, ssize_t *buffer_offset)
 {
+	ssize_t size;
+	int flag;
+
+	flag = 0;
+	size = *buffer_offset;
+	//printf("STR: %s\nBUFFER %s\n", *str, buffer);
+	//printf("OFFSET %zd\n", *buffer_offset);
+	while (buffer[size] && buffer[size] != '\n')
+		size++;
+	if(buffer[size] == '\n')
+		size++;
+	//printf("SIZE: %zd\n", size - *buffer_offset);
+	*str = new_str(*str, size - *buffer_offset);
+	if (!(*str))
+		return (0);
+	flag = ft_strnjoin(*str, &buffer[*buffer_offset]);
+	*buffer_offset = size;
+	return (flag);
+}
+
+int	ft_strnjoin(char *str1, char *str2)
+{
+	int flag;
+
+	flag = 0;
 	while (*str1)
 		str1++;
 	while (*str2 && *str2 != '\n')
@@ -25,43 +50,43 @@ void	str_join(char *str1, char *str2)
 	}
 	if (*str2 == '\n')
 	{
-		*str1 = *str2;
-		str1++;
+		*str1 = '\n';
+		*str1++;
+		flag = 1;
 	}
 	*str1 = '\0';
+	return (flag);
 }
 
-ssize_t	end_of_line(char *buffer, size_t bytes_read)
+char	*ft_calloc(ssize_t size)
 {
-	size_t	i;
+	char	*str;
 
-	i = 0;
-	while (i < bytes_read && buffer[i] != '\n')
-		i++;
-	if (buffer[i] == '\n')
-		buffer[i + 1] = '\0';
-	else
-		buffer[i] = '\0';
-	return (i);
+	str = malloc(size * sizeof(char));
+	while (size > 0)
+	{
+		str[size - 1] = 0;
+		size--;
+	}
 }
 
-char	*read_buffer(char *buffer, char **str, ssize_t *total, ssize_t i)
+char	*new_str(char *str, ssize_t bytes_read)
 {
+	ssize_t len;
 	char	*temp;
 
-
+	len = 0;
 	temp = str;
-	i = end_of_line(buffer, i);
-	if (buffer[i] == '\n')
-		str = malloc((*total + i + 2) * sizeof(char));
-	else
-		str = malloc((*total + i + 1) * sizeof(char));
+	while (*str)
+	{
+		len++;
+		str++;
+	}
+	str = malloc((bytes_read + len + 1) * sizeof(char));
 	if (!str)
-		return (NULL);
-	*total = *total + i;
-	str_join(str, temp);
-	str_join(str, buffer);
-	free(temp);
+		return (exit_gnl(temp));
+	str[0] = 0;
+	ft_strnjoin(str, temp);
 	return (str);
 }
 
