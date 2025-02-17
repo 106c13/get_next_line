@@ -10,24 +10,28 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
-
-int	ft_get_line(char **str, char *buffer, ssize_t *buffer_offset)
+#include "get_next_line_bonus.h"
+#include <stdio.h>
+int	ft_get_line(char **str, char *buffer)
 {
 	ssize_t	size;
 	int		flag;
 
 	flag = 0;
-	size = *buffer_offset;
+	size = 0;
+	printf("GET_line str: %s\n", *str);
+	if (buffer == NULL)
+		return (0);
 	while (buffer[size] && buffer[size] != '\n')
 		size++;
 	if (buffer[size] == '\n')
 		size++;
-	*str = new_str(*str, size - *buffer_offset);
+	*str = new_str(*str, size);
+	printf("GET_line str: %s\n", buffer);
 	if (!(*str))
 		return (0);
-	flag = ft_strnjoin(*str, &buffer[*buffer_offset]);
-	*buffer_offset = size;
+	flag = ft_strnjoin(*str, buffer);
+	printf("GET_line str: %s\n", *str);
 	return (flag);
 }
 
@@ -71,16 +75,40 @@ char	*new_str(char *str, ssize_t bytes_read)
 	}
 	str = malloc((bytes_read + len + 1) * sizeof(char));
 	if (!str)
-		return (exit_gnl(temp));
+		return (exit_gnl(temp, NULL));
 	str[0] = 0;
 	if (temp)
 		ft_strnjoin(str, temp);
 	free(temp);
 	return (str);
 }
-
-char	*exit_gnl(char *str)
+#include <stdio.h>
+char	*exit_gnl(char *str, char **buffer)
 {
 	free(str);
+	//printf("HERE %p %p\n", buffer, *buffer);
+	if (buffer != NULL)
+		free(*buffer);
+	*buffer = NULL;
 	return (NULL);
+}
+
+void	shift_buffer(char *buffer)
+{
+	ssize_t	i;
+	ssize_t	j;
+
+	i = 0;
+	j = 0;
+	if (!buffer)
+		return ;
+	while (buffer[i] != '\0' && buffer[i] != '\n')
+		i++;
+	if (buffer[i] == '\n')
+	{
+		i++;
+		while (buffer[i] != '\0')
+			buffer[j++] = buffer[i++];
+		buffer[j] = '\0';
+	}
 }
