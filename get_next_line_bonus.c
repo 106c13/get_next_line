@@ -11,7 +11,17 @@
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
-#include <stdio.h>
+
+char	*ft_calloc(ssize_t size)
+{
+	char	*str;
+
+	str = malloc((size + 1) * sizeof(char));
+	if (!str)
+		return (NULL);
+	str[0] = 0;
+	return (str);
+}
 
 char	*get_next_line(int fd)
 {
@@ -22,16 +32,13 @@ char	*get_next_line(int fd)
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	str = NULL;
-	printf("BUFF: %p %d\n%s\n", buffer[fd], fd, buffer[fd]);
 	if (buffer[fd] == NULL)
-		buffer[fd] = malloc((BUFFER_SIZE + 1) * sizeof(char));
-	printf("BUFF: %p %d\n%s\n", buffer[fd], fd, buffer[fd]);
+		buffer[fd] = ft_calloc(BUFFER_SIZE);
 	if (!buffer[fd])
 		return (NULL);
 	while (!ft_get_line(&str, buffer[fd]))
 	{
 		bytes_read = read(fd, buffer[fd], BUFFER_SIZE);
-		printf("-- BR: %zd\nBUFSTR:%s\nSTR: %s\n", bytes_read, buffer[fd], str);
 		if (bytes_read == -1)
 			return (exit_gnl(str, &buffer[fd]));
 		buffer[fd][bytes_read] = '\0';
@@ -40,6 +47,6 @@ char	*get_next_line(int fd)
 	}
 	if (*str == '\0')
 		return (exit_gnl(str, &buffer[fd]));
-	//shift_buffer(buffer[fd]);
+	shift_buffer(buffer[fd]);
 	return (str);
 }

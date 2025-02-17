@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
-#include <stdio.h>
+
 int	ft_get_line(char **str, char *buffer)
 {
 	ssize_t	size;
@@ -19,7 +19,6 @@ int	ft_get_line(char **str, char *buffer)
 
 	flag = 0;
 	size = 0;
-	printf("GET_line str: %s\n", *str);
 	if (buffer == NULL)
 		return (0);
 	while (buffer[size] && buffer[size] != '\n')
@@ -27,11 +26,9 @@ int	ft_get_line(char **str, char *buffer)
 	if (buffer[size] == '\n')
 		size++;
 	*str = new_str(*str, size);
-	printf("GET_line str: %s\n", buffer);
 	if (!(*str))
 		return (0);
 	flag = ft_strnjoin(*str, buffer);
-	printf("GET_line str: %s\n", *str);
 	return (flag);
 }
 
@@ -82,11 +79,10 @@ char	*new_str(char *str, ssize_t bytes_read)
 	free(temp);
 	return (str);
 }
-#include <stdio.h>
+
 char	*exit_gnl(char *str, char **buffer)
 {
 	free(str);
-	//printf("HERE %p %p\n", buffer, *buffer);
 	if (buffer != NULL)
 		free(*buffer);
 	*buffer = NULL;
