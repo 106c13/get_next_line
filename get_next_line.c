@@ -6,12 +6,11 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 13:46:37 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/02/16 16:24:22 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/02/17 12:11:58 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdio.h>
 
 char	*get_next_line(int fd)
 {
@@ -22,14 +21,9 @@ char	*get_next_line(int fd)
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	str = ft_calloc(1);
-	bytes_read = 1;
-	while (bytes_read > 0)
+	str = NULL;
+	while (!ft_get_line(&str, buffer, &buffer_offset))
 	{
-		if (get_line(&str, buffer, &buffer_offset))
-			break ;
-		if (!str)
-			return (NULL);
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
 		if (bytes_read == -1)
 			return (exit_gnl(str));
@@ -38,5 +32,7 @@ char	*get_next_line(int fd)
 		if (bytes_read == 0)
 			break ;
 	}
+	if (*str == '\0')
+		return (exit_gnl(str));
 	return (str);
 }

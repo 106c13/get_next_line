@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 13:47:35 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/02/16 15:51:21 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/02/17 11:26:29 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,8 @@
 char	*get_next_line(int fd);
 
 // get_next_line_utils.c
-int 	get_line(char **str, char *buffer, ssize_t *buffer_offset);
+int		ft_get_line(char **str, char *buffer, ssize_t *buffer_offset);
 int		ft_strnjoin(char *str1, char *str2);
 char	*new_str(char *str, ssize_t bytes_read);
-char	*ft_calloc(ssize_t size);
 char	*exit_gnl(char *str);
 #endif
