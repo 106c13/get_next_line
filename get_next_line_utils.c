@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 13:47:22 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/02/17 12:15:17 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/02/20 14:15:19 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,12 @@ int	ft_get_line(char **str, char *buffer)
 		size++;
 	*str = new_str(*str, size);
 	if (!(*str))
-		return (0);
-	flag = ft_strnjoin(*str, buffer);
+		return (1);
+	flag = ft_strjoin(*str, buffer);
 	return (flag);
 }
 
-int	ft_strnjoin(char *str1, char *str2)
+int	ft_strjoin(char *str1, char *str2)
 {
 	int	flag;
 
@@ -69,18 +69,19 @@ char	*new_str(char *str, ssize_t bytes_read)
 		}
 	}
 	str = malloc((bytes_read + len + 1) * sizeof(char));
-	if (!str)
+	if (str == NULL)
 		return (exit_gnl(temp, NULL));
 	str[0] = 0;
 	if (temp)
-		ft_strnjoin(str, temp);
+		ft_strjoin(str, temp);
 	free(temp);
 	return (str);
 }
 
 char	*exit_gnl(char *str, char *buffer)
 {
-	free(str);
+	if (str)
+		free(str);
 	if (buffer != NULL)
 		*buffer = 0;
 	return (NULL);

@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 13:46:37 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/02/17 12:11:58 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/02/20 14:16:20 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ char	*get_next_line(int fd)
 		if (bytes_read == 0)
 			break ;
 	}
-	if (*str == '\0')
-		return (exit_gnl(str, buffer));
+	if (str == NULL || *str == '\0')
+		return (exit_gnl(str, NULL));
 	shift_buffer(buffer);
 	return (str);
 }

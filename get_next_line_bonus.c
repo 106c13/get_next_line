@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 13:46:37 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/02/17 12:11:58 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/02/20 14:31:40 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*get_next_line(int fd)
 {
 	char		*str;
 	ssize_t		bytes_read;
-	static char	*buffer[4864];
+	static char	*buffer[OPEN_MAX];
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
@@ -45,7 +45,7 @@ char	*get_next_line(int fd)
 		if (bytes_read == 0)
 			break ;
 	}
-	if (*str == '\0')
+	if (str == NULL || *str == '\0')
 		return (exit_gnl(str, &buffer[fd]));
 	shift_buffer(buffer[fd]);
 	return (str);
